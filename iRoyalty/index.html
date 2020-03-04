@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>iRoyalty</title>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script type="text/javascript">
+
+    //Function to launch the the ajax call to sign in
+    function signin() {
+
+      //Get the values from the dropbox and input
+      var mode = document.getElementById("mode");
+      var selection = mode.value;
+      var user = document.getElementById("name").value;
+
+      //Check input
+      if (isNaN(user)) {
+        //Setup the url for the node server
+        var URL = "/users/register";
+
+        var data = {
+          userId: user,
+          mode: selection
+        };
+
+        //JQuery Ajax call
+        $.ajax({
+          url: URL,
+          type: "POST",
+          data: data,
+          dataType: "json",
+          success: function(json){
+            console.log("Successfully logged in");
+            var loggeduser = document.getElementById("loggeduser");
+            var loggedmode = document.getElementById("loggedmode");
+            loggeduser.innerHTML = json.userId;
+            loggedmode.innerHTML = json.mode;
+            window.location.href = "#matchmaking";
+          },
+          error: function(jgXHR, textStatus,errorThrown){
+            alert(jgXHR.responseJSON.message);
+
+          }
+        });
+        
+      }
+
+      else {
+        window.alert("Invalid input");
+      }
+
+      socket_conn(user);
+    }
+
+    function socket_conn(usr) {
+      alert(usr);
+
+      var socket = io();
+      socket.on('message', function(data) {
+        console.log(data);
+      });
+
+      socket.emit('new player', user);
+    }
+
+    $( document ).on("pagebeforeshow", "#matchmaking", function() {
+      var loggeduser = document.getElementById("loggeduser").innerHTML;
+      if (loggeduser === "") {
+        window.location.href = "#welcome";
+      }
+    });
+
+    function logout() {
+      var loggeduser = document.getElementById("loggeduser").innerHTML;
+
+      var URL = "/users/remove";
+      var data = {
+      userId: loggeduser
+      };
+
+      //JQuery Ajax call
+      $.ajax({
+        url: URL,
+        type: "DELETE",
+        data: data,
+        dataType: "json",
+        success: function(json){
+          console.log("Successfully logged out");
+        },
+        error: function(jgXHR, textStatus,errorThrown){
+          alert(jgXHR.responseJSON.message);
+
+        }
+      });
+
+    }
+
+    window.onbeforeunload = confirmExit;
+    function confirmExit()
+    {
+      if ($.mobile.activePage.attr('id') == "matchmaking") {
+        logout();
+        return null;
+      }
+    }
+
+    $( document ).on('pagebeforehide', "#matchmaking", function(){
+      logout();
+    });
+
+  </script>
+</head>
+<body>
+ 
+<div data-role="page" id="welcome" style="background-color: white">
+
+	<div data-role="content">
+    <div style="width: 100%; overflow: hidden;">
+      <div style="width: 750px; float: left;">
+        <center><h1 style="margin-top: 50px">iRoyalty</h1></center>
+        <center><img id="iRoyalty" style="margin-top:20px" src="/images/crown.jpeg" height="279px" width="484px"/></center>
+      </div>
+      <div style="margin-left: 750px; margin-right: 60px">
+        <center><h3 style="margin-top: 150px">Welcome to iRoyalty: An online chess game</h3></center>
+        <center><p style="margin-top: 10px">Please enter a unqiue name, choose a game mode, and press sign-in to begin!</p></center>
+        <p>Username: <input type="text" id="name"></p>
+        <select id="mode">
+          <option xyz="no-state" value="easy">Easy (5 min)</option>
+          <option xyz="no-state" value="hard">Hard (2 min)</option>
+        </select>
+        <button type="button" onclick="signin()">Sign in</button>
+      </div>
+    </div>
+	 
+  </div>
+
+</div>
+  
+ 
+<!-- Start of matchmaking page -->
+<div data-role="page" id="matchmaking" style="background-color: white">
+
+	<div data-role="header">
+  	<a data-icon="back" data-rel= "back" back-btn="true">Back</a>
+	<h1>Matchmaking</h1>
+	</div><!-- /header -->
+ 
+	<div data-role="content">
+    <div style="width: 100%; overflow: hidden;">
+      <div style="width: 750px; float: left;">
+        <center><h1 style="margin-top: 50px">iRoyalty</h1></center>
+        <center><img id="iRoyalty" style="margin-top:20px" src="/images/crown.jpeg" height="279px" width="484px"/></center>
+      </div>
+      <div style="margin-left: 750px; margin-right: 60px">
+        <center><h3 style="margin-top: 150px" id="loggeduser"></h3></center>
+        <center><p style="margin-top: 10px" id="loggedmode"></p></center>
+        <form>
+          <label for="find">Find user:</label><br>
+          <input type="text" id="find" name="find"><br>
+          <input type="submit" value="Submit">
+        </form> 
+      </div>
+    </div>
+
+	</div><!-- /content -->
+ 
+</div><!-- /page -->
+
+
+
+</body>
+</html>
