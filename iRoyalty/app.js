@@ -1,10 +1,11 @@
 // Dependencies
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
 const errorHandler = require("./helperz/error-handler");
 const http = require('http');
 const path = require('path');
-const socketIO = require('socket.io');var app = express();
+const socketIO = require('socket.io');
 const server = http.Server(app);
 const io = socketIO(server);app.set('port', 5000);
 
@@ -15,13 +16,26 @@ app.use("/users", require("./users/controllers"));
 app.use(errorHandler);
 app.use(express.static("."));
 
-app.listen(5000, () =>{
-    console.log( "Connecting on port 2424" )  
+server.listen(5000, function() {
+  console.log('Starting server on port 5000');
 });
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-var socketServer = require("./socket");
-socketServer(io);
+// Add the WebSocket handlers
+io.on('connection', function(socket) {
+});
+
+setInterval(function() {
+    io.sockets.emit('message', 'hi!');
+}, 1000);
+
+var players = {};
+
+io.on('connection', function(socket) {
+  socket.on('new player', function(data) {
+    console.log('new user: ' + data);
+  });
+});
