@@ -3,8 +3,9 @@
 	<head>
 	<title>iRoyalty</title>
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   <script type="text/javascript">
 
     //Function to launch the the ajax call to sign in
@@ -44,14 +45,13 @@
 
           }
         });
-        
+
+        socket_conn(user);
       }
 
       else {
         window.alert("Invalid input");
       }
-
-      socket_conn(user);
     }
 
     function socket_conn(usr) {
@@ -62,7 +62,11 @@
         console.log(data);
       });
 
-      socket.emit('new player', user);
+      socket.on('message', function(data) {
+        alert(data);
+      });
+
+      socket.emit('new player', usr);
     }
 
     $( document ).on("pagebeforeshow", "#matchmaking", function() {
