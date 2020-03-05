@@ -62,9 +62,6 @@
         console.log(data);
       });
 
-      socket.on('message', function(data) {
-        alert(data);
-      });
 
       socket.emit('new player', usr);
     }
