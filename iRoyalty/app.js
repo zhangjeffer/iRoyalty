@@ -15,7 +15,7 @@ app.use("/users", require("./users/controllers"));
 app.use(errorHandler);
 app.use(express.static("."));
 
-app.listen(5000, () =>{
+server.listen(5000, () =>{
     console.log( "Connecting on port 2424" )  
 });
 
