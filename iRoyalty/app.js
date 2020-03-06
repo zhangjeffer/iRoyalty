@@ -1,11 +1,10 @@
 // Dependencies
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
 const errorHandler = require("./helperz/error-handler");
 const http = require('http');
 const path = require('path');
-const socketIO = require('socket.io');
+const socketIO = require('socket.io');var app = express();
 const server = http.Server(app);
 const io = socketIO(server);app.set('port', 5000);
 
@@ -16,8 +15,12 @@ app.use("/users", require("./users/controllers"));
 app.use(errorHandler);
 app.use(express.static("."));
 
-server.listen(5000, function() {
-  console.log('Starting server on port 5000');
+app.listen(5000, () =>{
+    console.log( "Connecting on port 2424" )  
+});
+
+app.get("/chess",function(req, res){
+    res.sendFile(__dirname + "/chess.html")
 });
 
 app.get('/', function (req, res) {
