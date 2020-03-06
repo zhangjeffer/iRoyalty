@@ -3,11 +3,12 @@
 	<head>
 	<title>iRoyalty</title>
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript">
-
+  <script type="text/javascript"></script>
+  <script defer src="script.js"></script>
+  <script>
     //Function to launch the the ajax call to sign in
     function signin() {
 
@@ -38,6 +39,7 @@
             var loggedmode = document.getElementById("loggedmode");
             loggeduser.innerHTML = json.userId;
             loggedmode.innerHTML = json.mode;
+            register_user(user);
             window.location.href = "#matchmaking";
           },
           error: function(jgXHR, textStatus,errorThrown){
@@ -46,24 +48,11 @@
           }
         });
 
-        socket_conn(user);
       }
 
       else {
         window.alert("Invalid input");
       }
-    }
-
-    function socket_conn(usr) {
-      alert(usr);
-
-      var socket = io();
-      socket.on('message', function(data) {
-        console.log(data);
-      });
-
-
-      socket.emit('new player', usr);
     }
 
     $( document ).on("pagebeforeshow", "#matchmaking", function() {
@@ -160,12 +149,35 @@
         <form>
           <label for="find">Find user:</label><br>
           <input type="text" id="find" name="find"><br>
-          <input type="submit" value="Submit">
         </form> 
+        <button type="button" value="Submit" onclick="find_opponent()">Submit</button>
+
       </div>
     </div>
 
 	</div><!-- /content -->
+ 
+</div><!-- /page -->
+
+<!-- Start of matchmaking page -->
+<div data-role="page" id="game" style="background-color: white">
+
+  <div data-role="header">
+    <a data-icon="back" data-rel= "back" back-btn="true">Back</a>
+  <h1>Game</h1>
+  </div><!-- /header -->
+ 
+  <div data-role="content">
+    <div style="width: 100%; overflow: hidden;">
+      <center><h1 id="room"></h1></center>
+      <center><h1 id="player1"></h1></center>
+      <center><h1 id="player2"></h1></center>
+      <input type="text" id="inputmove"><br>
+      <button type="button" onclick="sendmove()">Submit</button>
+      <center><p id="samplechessboard">Start of game<br />-------------</p></center>
+    </div>
+
+  </div><!-- /content -->
  
 </div><!-- /page -->
 
