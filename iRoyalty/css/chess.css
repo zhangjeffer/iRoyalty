@@ -1,0 +1,29 @@
+.piece{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+
+.board {
+    margin: 0 auto;
+    width: 75%;
+    font-size: 1rem;
+}
+
+.square{
+    position:relative;
+    width: 12.5%;
+}
+.square:after{
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+} 
+
+.dark-sqaure{
+    background: #1583a4
+}
+.light-square{
+    background-color: #a1bec7;
+}
