@@ -3,11 +3,12 @@
 	<head>
 	<title>iRoyalty</title>
   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript">
-
+  <script type="text/javascript"></script>
+  <script defer src="script.js"></script>
+  <script>
     //Function to launch the the ajax call to sign in
     function signin() {
 
@@ -46,24 +47,13 @@
           }
         });
 
-        socket_conn(user);
+        register_user(user);
+
       }
 
       else {
         window.alert("Invalid input");
       }
-    }
-
-    function socket_conn(usr) {
-      alert(usr);
-
-      var socket = io();
-      socket.on('message', function(data) {
-        console.log(data);
-      });
-
-
-      socket.emit('new player', usr);
     }
 
     $( document ).on("pagebeforeshow", "#matchmaking", function() {
@@ -160,8 +150,9 @@
         <form>
           <label for="find">Find user:</label><br>
           <input type="text" id="find" name="find"><br>
-          <input type="submit" value="Submit">
         </form> 
+        <button type="button" value="Submit" onclick="find_opponent()">Submit</button>
+
       </div>
     </div>
 
