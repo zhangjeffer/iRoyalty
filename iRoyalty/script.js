@@ -1,6 +1,5 @@
 const socket = io();
 
-
 socket.on('paired', function(room) { 
     alert('paired to ' + room);
 });
@@ -33,7 +32,6 @@ socket.on('update board', function(move) {
 
 function register_user(usr) {
     socket.emit('new player', usr);
-
 }
 
 function find_opponent() {

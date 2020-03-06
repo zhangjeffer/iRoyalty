@@ -23,7 +23,6 @@ exports = module.exports = function(io){
             });
 
             socket.on('establish_pairing', function(opponent) {
-                
                 var roomname = "room" + room_counter;
                 socket.join(roomname);
                 io.sockets.connected[username_socketid[opponent]].join(roomname);
@@ -46,6 +45,5 @@ exports = module.exports = function(io){
                 var move = socketid_username[socket.id] + ": " + data.inputmove;
                 io.to(data.room).emit('update board', move);
             });
-
     });
 }
