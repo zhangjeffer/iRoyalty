@@ -33,5 +33,9 @@ function dropPiece(event) {
     var from = event.dataTransfer.getData("Text");
     var move = from + "-" + to;
     console.log(move); 
-    game.trymove(move);
+    var move_data = game.trymove(move);
+
+    if(move_data != null){
+        // emit move_data
+    }
 }

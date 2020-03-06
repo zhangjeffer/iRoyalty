@@ -4,7 +4,7 @@ function Game(boardID, boardColor, position){
         color : boardColor
         ,position: position
         //Uncomment to enableplayer to drag both color pieces
-        //,test:true
+        ,test:true
     });
 
     
@@ -34,13 +34,16 @@ function Game(boardID, boardColor, position){
         */
         trymove:function(move){
             cooridinates = move.split("-");
-            move_made = chess.move({
+
+            chess_move = {
                 from:cooridinates[0],
                 to:cooridinates[1],
 
                 // Put a mock promotion that we will undo if needed
                 promotion:'q'
-            })
+            };
+
+            move_made = chess.move(chess_move);
             if(move_made != null){
 
                 // Handle promotion by undoing
@@ -51,17 +54,23 @@ function Game(boardID, boardColor, position){
                         promotion_piece = prompt("What do you want to promote to?\n Options are 'b', 'n', 'q', 'r'", 'q');
 
                         if (promotion_piece === 'b' || promotion_piece === 'n' || promotion_piece === 'q' || promotion_piece === 'r'){
-                            this.acceptmove({
+                            promotion_move = {
                                 from:cooridinates[0],
                                 to:cooridinates[1],
                                 promotion:promotion_piece
-                            });
+                            }
+                            
+                            this.acceptmove(promotion_move);
+                            return promotion_move;
                             break;
                         }
                     }
                 }else{
                     this.update();
+                    return chess_move
                 }
+            }else{
+                return null;
             }
         },
         update:function(){
