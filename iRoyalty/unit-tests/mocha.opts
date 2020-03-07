@@ -1,0 +1,4 @@
+--timeout 15000
+--reporter spec
+--bail
+--check-leaks

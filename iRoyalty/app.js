@@ -3,7 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const errorHandler = require("./helperz/error-handler");
 const http = require('http');
-const path = require('path');
 const socketIO = require('socket.io');
 const app = express();
 const server = http.Server(app);
@@ -17,12 +16,8 @@ app.use("/users", require("./users/controllers"));
 app.use(errorHandler);
 app.use(express.static("."));
 
-server.listen(5000, () =>{
-    console.log( "Connecting on port 2424" )  
-});
-
 app.get("/chess",function(req, res){
-    res.sendFile(__dirname + "/chess.html")
+    res.sendFile(__dirname + "/chess.html");
 });
 
 app.get('/', function (req, res) {
@@ -30,3 +25,7 @@ app.get('/', function (req, res) {
 });
 
 socketServer(io);
+
+module.exports.server = server.listen(5000, () =>{
+    console.log( "Connecting on port 5000" );
+});
