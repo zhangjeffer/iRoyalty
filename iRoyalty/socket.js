@@ -38,15 +38,6 @@ exports = module.exports = function(io){
 
             socket.on('sendreject', function(opponent) {
                 io.to(username_socketid[opponent]).emit('reject', socketid_username[socket.id]);
-<<<<<<< HEAD
-=======
-            });
-
-            socket.on("move piece", function(data) {
-                console.log(data);
-                var move = socketid_username[socket.id] + ": " + data.inputmove;
-                io.to(data.room).emit('update board', move);
->>>>>>> de07f89e87da505cae382bf81b39a10d404fea78
             });
 
             socket.on("move piece", function(data) {
