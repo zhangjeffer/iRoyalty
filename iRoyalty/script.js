@@ -9,7 +9,7 @@ socket.on('challenger', function(opponent) {
     if (confirm(opponent + " wants to challenge you do you accept?")) {
         socket.emit('establish_pairing', opponent);
     } else {
-        socket.emit('sendreject', opponent)
+        socket.emit('sendreject', opponent);
     }
 });
 
@@ -79,7 +79,7 @@ function capturePiece(event) {
     var data = {
         room: room,
         move_data: move_data
-    }
+    };
 
     if(move_data != null){
         socket.emit("move piece", data);
@@ -97,7 +97,7 @@ function dropPiece(event) {
     var data = {
         room: room,
         move_data: move_data
-    }
+    };
 
     if(move_data != null){
         socket.emit("move piece", data);

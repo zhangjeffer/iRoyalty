@@ -12,7 +12,7 @@ async function register(newUser){
     			userId: newUser.userId,
     			mode: newUser.mode
     		});
-    		user.save()
+    		user.save();
     	}
         
     });
