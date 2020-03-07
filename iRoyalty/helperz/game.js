@@ -1,8 +1,8 @@
 function Game(boardID, boardColor, position){
     var chess = (position == null) ?  Chess() : Chess(position) ;
     var board = new ChessBoard(boardID, {
-        color : boardColor
-        ,position: position
+        color : boardColor,
+        position: position
         //Uncomment to enableplayer to drag both color pieces
         //,test:true
     });
@@ -58,15 +58,14 @@ function Game(boardID, boardColor, position){
                                 from:cooridinates[0],
                                 to:cooridinates[1],
                                 promotion:promotion_piece
-                            }
+                            };
                             
                             this.acceptmove(promotion_move);
                             return promotion_move;
-                            break;
                         }
                     }
                 }else{
-                    return chess_move
+                    return chess_move;
                 }
             }else{
                 return null;
@@ -75,14 +74,14 @@ function Game(boardID, boardColor, position){
         update:function(){
             board.update(chess.fen());
             if (chess.in_checkmate()){
-                alert("Checkmate!")
+                alert("Checkmate!");
             }else if(chess.in_stalemate()){
                 alert("Stalemate!");
             }else if(chess.in_check()){
                 alert("Check!");
             }else if(chess.in_draw()){
-                alert("Draw!")
+                alert("Draw!");
             }
         }
-    }
+    };
 }
