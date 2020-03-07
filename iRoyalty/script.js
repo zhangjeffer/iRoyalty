@@ -1,6 +1,9 @@
 const socket = io();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> de07f89e87da505cae382bf81b39a10d404fea78
 socket.on('paired', function(room) { 
     alert('paired to ' + room);
 });
@@ -33,7 +36,10 @@ socket.on('update board', function(move) {
 
 function register_user(usr) {
     socket.emit('new player', usr);
+<<<<<<< HEAD
 
+=======
+>>>>>>> de07f89e87da505cae382bf81b39a10d404fea78
 }
 
 function find_opponent() {
