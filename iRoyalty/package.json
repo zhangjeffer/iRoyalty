@@ -6,13 +6,18 @@
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
     "express": "^4.17.1",
+    "mocha": "^7.1.0",
     "mongoose": "^5.9.2",
     "socket.io": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "istanbul": "^0.4.5"
+  },
   "scripts": {
-    "app": "nodemon app.js"
+    "app": "nodemon app.js",
+    "unit-tests": "mocha ./unit-tests/test.js"
   },
   "keywords": [],
   "author": "",
