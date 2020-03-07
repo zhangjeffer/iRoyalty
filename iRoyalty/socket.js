@@ -17,19 +17,35 @@ exports = module.exports = function(io){
 
             socket.on('find_opponent', function(opponent) {
                 console.log("find " + opponent);
-                io.to(username_socketid[opponent]).emit('challenger', socketid_username[socket.id]);
+                if (username_socketid[opponent]) {
+                    io.to(username_socketid[opponent]).emit('challenger', socketid_username[socket.id]);
+                }
             });
 
             socket.on('establish_pairing', function(opponent) {
                 
                 var roomname = "room" + room_counter;
-                io.sockets.connected[socket.id].join(roomname);
+                socket.join(roomname);
                 io.sockets.connected[username_socketid[opponent]].join(roomname);
                 room_counter += 1; 
-                socket.to(roomname).broadcast.emit('paired', roomname);
-                var room = io.sockets.adapter.rooms[roomname];
-                console.log(room.length);
-                console.log("user1: " + opponent + " user2: " + socketid_username[socket.id]);
+                var gameinfo = {
+                    room: roomname,
+                    player1: opponent,
+                    player2: socketid_username[socket.id]
+                };
+                io.to(roomname).emit('startgame', gameinfo);
+
             });
+
+            socket.on('sendreject', function(opponent) {
+                io.to(username_socketid[opponent]).emit('reject', socketid_username[socket.id]);
+            });
+
+            socket.on("move piece", function(data) {
+                console.log(data);
+                var move = socketid_username[socket.id] + ": " + data.inputmove;
+                io.to(data.room).emit('update board', move);
+            });
+
     });
 }
