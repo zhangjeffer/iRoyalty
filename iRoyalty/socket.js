@@ -20,17 +20,22 @@ exports = module.exports = function(io){
                 if (username_socketid[opponent]) {
                     io.to(username_socketid[opponent]).emit('challenger', socketid_username[socket.id]);
                 }
+                else {
+                    io.to(socket.id).emit('reject', opponent);
+                }
             });
 
             socket.on('establish_pairing', function(opponent) {
-                var roomname = "room" + room_counter;
+                var roomname = "Room " + room_counter;
                 socket.join(roomname);
                 io.sockets.connected[username_socketid[opponent]].join(roomname);
                 room_counter += 1; 
                 var gameinfo = {
                     room: roomname,
-                    player1: opponent,
-                    player2: socketid_username[socket.id]
+                    host: opponent,
+                    challenger: socketid_username[socket.id],
+                    black: username_socketid[opponent],
+                    white: socket.id
                 };
                 io.to(roomname).emit('startgame', gameinfo);
 
@@ -41,9 +46,8 @@ exports = module.exports = function(io){
             });
 
             socket.on("move piece", function(data) {
-                console.log(data);
-                var move = socketid_username[socket.id] + ": " + data.inputmove;
-                io.to(data.room).emit('update board', move);
+                io.to(data.room).emit('update board', data.move_data);
             });
+
     });
 }

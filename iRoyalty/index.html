@@ -12,9 +12,6 @@
     //Function to launch the the ajax call to sign in
     function signin() {
 
-      //Get the values from the dropbox and input
-      var mode = document.getElementById("mode");
-      var selection = mode.value;
       var user = document.getElementById("name").value;
 
       //Check input
@@ -23,8 +20,7 @@
         var URL = "/users/register";
 
         var data = {
-          userId: user,
-          mode: selection
+          userId: user
         };
 
         //JQuery Ajax call
@@ -36,9 +32,7 @@
           success: function(json){
             console.log("Successfully logged in");
             var loggeduser = document.getElementById("loggeduser");
-            var loggedmode = document.getElementById("loggedmode");
             loggeduser.innerHTML = json.userId;
-            loggedmode.innerHTML = json.mode;
             register_user(user);
             window.location.href = "#matchmaking";
           },
@@ -113,12 +107,8 @@
       </div>
       <div style="margin-left: 750px; margin-right: 60px">
         <center><h3 style="margin-top: 150px">Welcome to iRoyalty: An online chess game</h3></center>
-        <center><p style="margin-top: 10px">Please enter a unqiue name, choose a game mode, and press sign-in to begin!</p></center>
+        <center><p style="margin-top: 10px">Please enter a unqiue name, and press sign-in to begin!</p></center><br>
         <p>Username: <input type="text" id="name"></p>
-        <select id="mode">
-          <option xyz="no-state" value="easy">Easy (5 min)</option>
-          <option xyz="no-state" value="hard">Hard (2 min)</option>
-        </select>
         <button type="button" onclick="signin()">Sign in</button>
       </div>
     </div>
@@ -144,12 +134,12 @@
       </div>
       <div style="margin-left: 750px; margin-right: 60px">
         <center><h3 style="margin-top: 150px" id="loggeduser"></h3></center>
-        <center><p style="margin-top: 10px" id="loggedmode"></p></center>
+        <center><p style="margin-top: 10px">Please enter an opponent's name, and challenge them!</p></center><br>
         <form>
-          <label for="find">Find user:</label><br>
-          <input type="text" id="find" name="find"><br>
+          <label for="find">Find user:</label>
+          <input type="text" id="find" name="find">
         </form> 
-        <button type="button" value="Submit" onclick="find_opponent()">Submit</button>
+        <button type="button" value="Submit" onclick="find_opponent()">Challenge</button>
 
       </div>
     </div>
@@ -158,22 +148,30 @@
  
 </div><!-- /page -->
 
-<!-- Start of matchmaking page -->
+
+<!-- Start of game page -->
 <div data-role="page" id="game" style="background-color: white">
+  <link rel="stylesheet" href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'/>
+  <link rel="stylesheet" href="css/chess.css"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+
+  <script src="helperz/chessboard.js"></script>
+  <script src="helperz/game.js"></script>
+  <!-- <script src="helperz/chessmain.js"></script>-->
 
   <div data-role="header">
-    <a data-icon="back" data-rel= "back" back-btn="true">Back</a>
-  <h1>Game</h1>
+  <h1 id="room"></h1>
   </div><!-- /header -->
  
   <div data-role="content">
     <div style="width: 100%; overflow: hidden;">
-      <center><h1 id="room"></h1></center>
-      <center><h1 id="player1"></h1></center>
-      <center><h1 id="player2"></h1></center>
-      <input type="text" id="inputmove"><br>
-      <button type="button" onclick="sendmove()">Submit</button>
-      <center><p id="samplechessboard">Start of game<br />-------------</p></center>
+      <center><p id="opponent" style="font-weight: normal; background: white"></p></center>
+      <div class = "table">
+        <div id="board" class="board">
+        </div>
+      </div>
+      <center><p id="you" style="font-weight: normal; background: white"></p></center>
     </div>
 
   </div><!-- /content -->

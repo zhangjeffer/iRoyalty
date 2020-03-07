@@ -21,9 +21,17 @@
     padding-bottom: 100%;
 } 
 
-.dark-sqaure{
-    background: #1583a4
+.dark-square{
+    background-color: #1583a4;
 }
 .light-square{
     background-color: #a1bec7;
+}
+
+#opponent {
+    font-size: 25px;
+}
+
+#you {
+    font-size: 25px;
 }

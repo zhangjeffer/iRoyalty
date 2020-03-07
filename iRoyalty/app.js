@@ -19,10 +19,6 @@ server.listen(5000, () =>{
     console.log( "Connecting on port 2424" )  
 });
 
-app.get("/chess",function(req, res){
-    res.sendFile(__dirname + "/chess.html")
-});
-
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });

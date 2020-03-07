@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    userId: {type: String, unique: true, required: true},
-    mode: {type: String, required: true}
+    userId: {type: String, unique: true, required: true}
 });
 
 schema.set("toJSON", {virtuals: true});
