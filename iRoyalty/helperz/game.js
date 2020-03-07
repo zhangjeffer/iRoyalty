@@ -4,7 +4,7 @@ function Game(boardID, boardColor, position){
         color : boardColor
         ,position: position
         //Uncomment to enableplayer to drag both color pieces
-        ,test:true
+        //,test:true
     });
 
     
@@ -66,7 +66,6 @@ function Game(boardID, boardColor, position){
                         }
                     }
                 }else{
-                    this.update();
                     return chess_move
                 }
             }else{

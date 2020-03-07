@@ -1,9 +1,6 @@
 const socket = io();
+var game;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> de07f89e87da505cae382bf81b39a10d404fea78
 socket.on('paired', function(room) { 
     alert('paired to ' + room);
 });
@@ -17,21 +14,24 @@ socket.on('challenger', function(opponent) {
 });
 
 socket.on('reject', function(opponent) { 
-        alert(opponent + ' rejected');
+        alert(opponent + ' rejected or ' + opponent + ' cannot be reached');
 });
 
 socket.on('startgame', function(gameinfo) {
         $("#room").html(gameinfo.room);
-        $("#player1").html("Player 1: " + gameinfo.player1); 
-        $("#player2").html("Player 2: " + gameinfo.player2); 
+        if (socket.id === gameinfo.black) {
+            startGame("black");
+            $("#opponent").html("Opponent: " + gameinfo.challenger); 
+            $("#you").html("You: " + gameinfo.host);
+            changeTurn(document.getElementById("opponent"));
+        }
+        else {
+            startGame("white");
+            $("#opponent").html("Opponent: " + gameinfo.host); 
+            $("#you").html("You: " + gameinfo.challenger);
+            changeTurn(document.getElementById("you"));
+        }
         window.location.href = "#game";
-});
-
-socket.on('update board', function(move) {
-    console.log("updating board");
-    var samplechessboard = document.getElementById("samplechessboard");
-    samplechessboard.innerHTML += ("<br />" + move);
-
 });
 
 function register_user(usr) {
@@ -44,13 +44,75 @@ function find_opponent() {
     socket.emit("find_opponent", opponent);
 }
 
-function sendmove() {
-    console.log("sending move");
+
+socket.on('update board', function(move) {
+    game.acceptmove(move);
+    changeTurn(document.getElementById("opponent"));
+    changeTurn(document.getElementById("you"));
+
+});
+
+function startGame(color) {
+    if (color === "black") {
+        game = new Game("board", "black");
+    }
+    else {
+        game = new Game("board", "white");
+    }
+}
+
+function dragPieceStart(event) {
+    event.dataTransfer.setData("Text", event.target.parentElement.id);
+}
+
+function allowDropPiece(event) {
+    event.preventDefault();
+}
+function capturePiece(event) {
+    event.preventDefault();
+    var to = event.target.parentElement.id;
+    var from = event.dataTransfer.getData("Text");
+    var move = from + "-" + to;
+    var move_data = game.trymove(move);
+
     var room = document.getElementById("room").innerHTML;
-    var inputmove = document.getElementById("inputmove").value;
     var data = {
         room: room,
-        inputmove: inputmove
-    };
-    socket.emit('move piece', data);
+        move_data: move_data
+    }
+
+    if(move_data != null){
+        socket.emit("move piece", data);
+    }    
+}
+
+function dropPiece(event) {
+    event.preventDefault();
+    var to = event.target.id;
+    var from = event.dataTransfer.getData("Text");
+    var move = from + "-" + to;
+    var move_data = game.trymove(move);
+
+    var room = document.getElementById("room").innerHTML;
+    var data = {
+        room: room,
+        move_data: move_data
+    }
+
+    if(move_data != null){
+        socket.emit("move piece", data);
+    }
+}
+
+function changeTurn(element) {
+    var weight = element.style.fontWeight;
+    console.log(weight);
+    if (weight === "bold") {
+        element.style.fontWeight = "normal";
+        element.style.background = "white";
+    }
+    else {
+        element.style.fontWeight = "bold";
+        element.style.background = "yellow";
+    }
 }
