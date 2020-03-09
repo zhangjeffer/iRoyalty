@@ -16,8 +16,8 @@ app.use("/users", require("./users/controllers"));
 app.use(errorHandler);
 app.use(express.static("."));
 
-app.get("/chess",function(req, res){
-    res.sendFile(__dirname + "/chess.html");
+app.get("/about",function(req, res){
+    res.sendFile(__dirname + "/about.html");
 });
 
 app.get('/', function (req, res) {
