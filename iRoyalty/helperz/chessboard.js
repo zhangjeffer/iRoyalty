@@ -16,54 +16,41 @@ function ChessBoard(boardId, options){
         switch(letter){
             case "b":
                 return "bB.png";
-                break;
             case "B":
                 return "wB.png";
-                break;
             case "k":
                 return "bK.png";
-                break;
             case "K":
-                return "wK.png"
-                break;
+                return "wK.png";
             case "n":
                 return "bN.png";
-                break;
             case "N":
                 return "wN.png";
-                break;
             case "p":
                 return "bP.png";
-                break;
             case "P":
                 return "wP.png";
-                break;
             case "q":
                 return "bQ.png";
-                break;
             case "Q":
                 return "wQ.png";
-                break;
             case "r":
                 return "bR.png";
-                break;
             case "R":
                 return "wR.png";
-                break;
             default:
                 return null;
-                break;
         }
     }
     function getPerspectiveHtml(FEN, color){
         var boardHtml = "";
         var white = color === "white";
+        var fen_letters;
         if (white){
-            var fen_letters = FEN.split("/").join("");
+            fen_letters = FEN.split("/").join("");
         }else{
-            var fen_letters = FEN.split("/").join("").split(" ")[0].split("").reverse().join("");
+            fen_letters = FEN.split("/").join("").split(" ")[0].split("").reverse().join("");
         }
-        console.log(fen_letters);
         var f = 0;
         var space_count = 0;
     
@@ -79,7 +66,7 @@ function ChessBoard(boardId, options){
                     var draggable = "true";
                     var image = getImage(fen_letters[f]);
                     if (image === null){
-                        var space_count = parseInt(fen_letters[f]);
+                        space_count = parseInt(fen_letters[f]);
                         space_count--;
                     }else{
                         if( (!allowBothSides) && (( image[0] === "w" && !white) || (image[0] === "b" && white )) ){ draggable = "false"; }
@@ -91,10 +78,10 @@ function ChessBoard(boardId, options){
                 }
                 boardHtml += "</div>";
             }
-            boardHtml += "</div>"
+            boardHtml += "</div>";
         }
     
-        return boardHtml
+        return boardHtml;
     }
 
     boardHtml = getPerspectiveHtml(position, color);
@@ -104,11 +91,11 @@ function ChessBoard(boardId, options){
     return{
         update(FEN){
             boardDiv.html(getPerspectiveHtml(FEN, color));
-        }
-        ,color(){
+        },
+        color(){
             return color;
         }
-    }
+    };
 }
 
 
